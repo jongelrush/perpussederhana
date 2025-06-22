@@ -4,15 +4,11 @@ include 'koneksi.php';
 
 if (isset($_POST['login'])) {
     $user = $_POST['username'];
-    $pass = md5($_POST['password']); // gunakan password_hash untuk produksi
+    $pass = md5($_POST['password']);
 
     $query = $conn->query("SELECT * FROM admin WHERE username='$user' AND password='$pass'");
     if ($query && $query->num_rows > 0) {
-        $data = $query->fetch_assoc();
-
-        $_SESSION['username'] = $data['username'];
-        $_SESSION['role'] = 'admin'; // atur role manual atau ambil dari DB jika tersedia
-
+        $_SESSION['username'] = $user;
         header("Location: index.php");
         exit;
     } else {
@@ -39,11 +35,11 @@ if (isset($_POST['login'])) {
                     <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
                     <form method="POST">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
+                            <label>Username</label>
                             <input type="text" name="username" class="form-control" required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label>Password</label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
                         <button name="login" class="btn btn-primary w-100">Login</button>
